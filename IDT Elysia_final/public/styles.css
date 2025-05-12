@@ -1,0 +1,131 @@
+/* Font fallback with Harlow styling */
+@font-face {
+  font-family: 'Harlow Solid Italic';
+  src: local('Harlow Solid Italic');
+  font-style: italic;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inknut+Antiqua&display=swap');
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+} */
+
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
+/* Background image container */
+.background {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* Background image using <img> tag for full coverage */
+/* .background::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-image: url('Img1.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: brightness(1.0);
+  z-index: -1;
+} */
+
+/* .des p{
+  font-family: Poppins;
+font-weight: 300;
+font-size: 40px;
+line-height: 75px;
+letter-spacing: 2%;
+color:#FFFFFF;
+}
+
+.quotes p{
+  font-family: Harlow Solid Italic;
+font-weight: 400;
+font-style: italic;
+font-size: 60px;
+line-height: 75px;
+letter-spacing: 2%;
+color: #7E01AC;
+} */
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  z-index: 1;
+  position: relative;
+}
+
+.logo-top {
+  font-family: 'Harlow Solid Italic', cursive;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 60px;
+  color: #FFFFFF;
+}
+
+.nav-links a {
+  font-family: 'Inknut Antiqua', serif;
+  font-weight: 400;
+  font-size: 30px;
+  margin-left: 30px;
+  color: #FFFFFF;
+  text-decoration: none;
+  padding: 5px 15px;
+  border-radius: 5px;
+}
+
+/* Center animated gradient text */
+.center-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Harlow Solid Italic', cursive;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 150px;
+  letter-spacing: 0.3em;
+
+  background: linear-gradient(180deg, #BE3DE5 0%, #5F145E 34%, #4014B7 66%, #7E01AC 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+
+  white-space: nowrap;
+  overflow: hidden;
+  z-index: 1;
+}

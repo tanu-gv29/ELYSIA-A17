@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Past Interactions - Elysia</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('/Img2.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      font-family: 'Poppins', sans-serif;
+      color: white;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 50px;
+      position: relative;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .user-menu {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .user-circle {
+      width: 40px;
+      height: 40px;
+      background-color: white;
+      color: #7E01AC;
+      font-weight: bold;
+      font-size: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 60px;
+      right: 0;
+      background: linear-gradient(145deg, #ffffff, #f8e6fc);
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(126, 1, 172, 0.3);
+      display: none;
+      flex-direction: column;
+      width: 200px;
+      z-index: 10;
+      padding: 10px 0;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+
+    .dropdown a {
+      padding: 12px 20px;
+      text-decoration: none;
+      font-family: 'Inknut Antiqua', serif;
+      font-size: 16px;
+      color: #4c074b;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .dropdown a:hover {
+      background-color: #f3d5fb;
+      color: #7E01AC;
+      font-weight: bold;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-content {
+      padding: 140px 50px 50px;
+    }
+
+    .report-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 10px rgba(126, 1, 172, 0.4);
+    }
+
+    .report-card h3 {
+      margin-bottom: 10px;
+    }
+
+    .report-card ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ Navbar -->
+  <nav class="navbar">
+    <div class="logo-top">Elysia</div>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/aboutus">About us</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="#">Subscription</a>
+
+      <% if (!user) { %>
+        <a href="/login">Log in</a>
+      <% } else { %>
+        <div class="user-menu">
+          <div class="user-circle" id="userCircle"><%= user.initial %></div>
+          <div class="dropdown" id="dropdownMenu">
+            <a href="/profile">Profile</a>
+            <a href="/past">Past Interaction</a>
+            <a href="/report">Recent Report</a>
+            <a href="/logout">Logout</a>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </nav>
+
+  <!-- ✅ Page Content -->
+  <div class="page-content">
+    <h1>Your Past Interactions</h1>
+
+    <% if (reports.length === 0) { %>
+      <p>No past sessions found.</p>
+    <% } else { %>
+      <% reports.forEach(r => { %>
+        <div class="report-card">
+          <h3><%= new Date(r.createdAt).toLocaleString() %></h3>
+          <p><strong>Mood:</strong> <%= r.mood || 'Pending Analysis' %></p>
+          <% if (r.takeaways && r.takeaways.length) { %>
+            <p><strong>Takeaways:</strong></p>
+            <ul><% r.takeaways.forEach(t => { %><li><%= t %></li><% }) %></ul>
+          <% } %>
+          <% if (r.nextSteps && r.nextSteps.length) { %>
+            <p><strong>Next Steps:</strong></p>
+            <ul><% r.nextSteps.forEach(t => { %><li><%= t %></li><% }) %></ul>
+          <% } %>
+          <% if (r.quote) { %>
+            <p><strong>Quote:</strong> <em><%= r.quote %></em></p>
+          <% } %>
+        </div>
+      <% }) %>
+    <% } %>
+  </div>
+
+  <script>
+    const circle = document.getElementById('userCircle');
+    const dropdown = document.getElementById('dropdownMenu');
+    if (circle && dropdown) {
+      circle.addEventListener('click', () => {
+        dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+      });
+
+      window.addEventListener('click', (e) => {
+        if (!circle.contains(e.target) && !dropdown.contains(e.target)) {
+          dropdown.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Voice Talk - Elysia</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .background {
+      height: 100vh;
+      width: 100vw;
+      background-image: url('/Img3.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      filter: brightness(1.2);
+    }
+
+    .quit-btn {
+      position: absolute;
+      top: 30px;
+      right: 50px;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 25px;
+      background-color: #7E01AC;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .quit-btn:hover {
+      background-color: #9E32CC;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="background">
+    <!-- Quit Button -->
+    <button class="quit-btn" onclick="quitAndSend()">Quit</button>
+  </div>
+
+  <!-- Voiceflow Bot -->
+  <script type="text/javascript">
+    (function(d, t) {
+      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      v.onload = function() {
+        window.voiceflow.chat.load({
+          verify: { projectID: '6820c4c592465c3b0c9034c5' },
+          url: 'https://general-runtime.voiceflow.com',
+          versionID: 'production',
+          voice: {
+            url: "https://runtime-api.voiceflow.com"
+          }
+        });
+      }
+      v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
+      v.type = "text/javascript";
+      s.parentNode.insertBefore(v, s);
+    })(document, 'script');
+  </script>
+
+  <!-- Transcription Logic -->
+  <script>
+  const transcript = [];
+
+  // Voiceflow event listener
+  window.addEventListener("message", (event) => {
+    const { data } = event;
+    if (data?.event === "message" && data.payload?.message) {
+      transcript.push(data.payload.message);
+      sessionStorage.setItem("elysiaTranscript", JSON.stringify(transcript));
+    }
+  });
+
+  // Send transcript on quit
+  function quitAndSend() {
+    const messages = JSON.parse(sessionStorage.getItem("elysiaTranscript") || "[]");
+
+    fetch("/report", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages })
+    }).then(() => {
+      sessionStorage.removeItem("elysiaTranscript");
+      window.location.href = "/report";
+    });
+  }
+</script>
+
+
+</body>
+</html>

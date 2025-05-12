@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chat - Elysia</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .background {
+      height: 100vh;
+      width: 100vw;
+      background-image: url('/Img3.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 100px;
+      filter: brightness(1.2);
+    }
+
+    .quit-btn {
+      position: absolute;
+      top: 30px;
+      right: 50px;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 25px;
+      background-color: #7E01AC;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .quit-btn:hover {
+      background-color: #9E32CC;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 50px;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      position: relative;
+    }
+
+    .user-menu {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .user-circle {
+      width: 40px;
+      height: 40px;
+      background-color: white;
+      color: #7E01AC;
+      font-weight: bold;
+      font-size: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 60px;
+      right: 0;
+      background: linear-gradient(145deg, #ffffff, #f8e6fc);
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(126, 1, 172, 0.3);
+      display: none;
+      flex-direction: column;
+      width: 200px;
+      z-index: 10;
+      padding: 10px 0;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+
+    .dropdown a {
+      padding: 12px 20px;
+      text-decoration: none;
+      font-family: 'Inknut Antiqua', serif;
+      font-size: 16px;
+      color: #4c074b;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .dropdown a:hover {
+      background-color: #f3d5fb;
+      color: #7E01AC;
+      font-weight: bold;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="background">
+
+    <!-- ✅ Navbar -->
+    <!-- <nav class="navbar">
+      <div class="logo-top">Elysia</div>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/aboutus">About us</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="#">Subscription</a>
+
+        <% if (!user) { %>
+          <a href="/login">Log in</a>
+        <% } else { %>
+          <div class="user-menu">
+            <div class="user-circle" id="userCircle"><%= user.initial %></div>
+            <div class="dropdown" id="dropdownMenu">
+              <a href="/profile">Profile</a>
+              <a href="#">Past Interaction</a>
+              <a href="#">Recent Report</a>
+              <a href="/logout">Logout</a>
+            </div>
+          </div>
+        <% } %>
+      </div>
+    </nav> -->
+
+    <!-- ✅ Quit Button -->
+    <button class="quit-btn" onclick="quitAndSend()">Quit</button>
+  </div>
+
+  <!-- ✅ Chatbot Script -->
+  <script type="text/javascript">
+    (function(d, t) {
+      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      v.onload = function() {
+        window.voiceflow.chat.load({
+          verify: { projectID: '6820ca2992465c3b0c903926' },
+          url: 'https://general-runtime.voiceflow.com',
+          versionID: 'production',
+          voice: {
+            url: "https://runtime-api.voiceflow.com"
+          }
+        });
+      };
+      v.src = "https://cdn.voiceflow.com/widget-next/bundle.mjs";
+      v.type = "text/javascript";
+      s.parentNode.insertBefore(v, s);
+    })(document, 'script');
+  </script>
+
+  <!-- ✅ Transcription & Quit Logic -->
+  <script>
+    const transcript = [];
+
+    window.addEventListener("message", (event) => {
+      const { data } = event;
+      if (data?.event === "message" && data.payload?.message) {
+        transcript.push(data.payload.message);
+        sessionStorage.setItem("elysiaTranscript", JSON.stringify(transcript));
+      }
+    });
+
+    function quitAndSend() {
+      const messages = JSON.parse(sessionStorage.getItem("elysiaTranscript") || "[]");
+
+      fetch("/report", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages })
+      }).then(() => {
+        sessionStorage.removeItem("elysiaTranscript");
+        window.location.href = "/report";
+      });
+    }
+
+    // Dropdown toggle logic
+    const circle = document.getElementById('userCircle');
+    const dropdown = document.getElementById('dropdownMenu');
+    if (circle && dropdown) {
+      circle.addEventListener('click', () => {
+        dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+      });
+
+      window.addEventListener('click', (e) => {
+        if (!circle.contains(e.target) && !dropdown.contains(e.target)) {
+          dropdown.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>

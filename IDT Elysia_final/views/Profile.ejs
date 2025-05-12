@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Profile</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .background {
+      height: 100vh;
+      width: 100vw;
+      background-image: url('/Img2.jpg');
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      filter: brightness(1.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 100px;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .profile-card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(15px);
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 0 20px rgba(126, 1, 172, 0.3);
+      width: 400px;
+    }
+
+    .profile-circle {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: white;
+      color: #7E01AC;
+      font-size: 30px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .user-info p {
+      margin: 10px 0;
+      font-size: 18px;
+    }
+
+    .back-button {
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 25px;
+      background-color: #7E01AC;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: #9E32CC;
+    }
+  </style>
+</head>
+<body>
+  <div class="background">
+    <div class="profile-card">
+      <div class="profile-circle"><%= user.initial %></div>
+      <h2><%= user.name %></h2>
+      <div class="user-info">
+        <p><strong>Email:</strong> <%= user.email %></p>
+      </div>
+      <button class="back-button" onclick="window.location.href='/'">Back to Home</button>
+    </div>
+  </div>
+</body>
+</html>

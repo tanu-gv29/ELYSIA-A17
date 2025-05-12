@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Elysia</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .background {
+      position: relative;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      background-image: url('/Img2.jpg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      filter: brightness(1.2);
+    }
+
+    .content-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 4rem;
+      margin-left: auto;
+      margin-right: 25%;
+      border: white;
+    }
+
+    .signup-box {
+      background-color: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      padding: 40px 30px;
+      border-radius: 10px;
+      width: 400px;
+      color: white;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    }
+
+    .signup-box h1 {
+      font-size: 36px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .signup-box p.subtitle {
+      font-size: 14px;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 10px 15px;
+      margin: 10px 0;
+      border-radius: 25px;
+      border: 1px solid white;
+      background: transparent;
+      color: white;
+      font-size: 14px;
+    }
+
+    .signup-button {
+      width: 100%;
+      background-color: #4c074b;
+      color: white;
+      padding: 12px;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      margin-top: 15px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .signup-button:hover {
+      background-color: #6e0d6c;
+      transform: scale(1.02);
+    }
+
+    .or-separator {
+      display: flex;
+      align-items: center;
+      margin: 20px 0;
+      color: #000;
+      font-size: 14px;
+    }
+
+    .or-separator hr {
+      flex: 1;
+      border: none;
+      height: 1px;
+      background-color: #000;
+      margin: 0 10px;
+    }
+
+    .google-button {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #000;
+      border-radius: 25px;
+      background: white;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .login-link {
+      text-align: center;
+      font-size: 14px;
+      margin-top: 20px;
+    }
+
+    .login-link a {
+      color: #000;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    .navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  z-index: 1;
+  position: relative;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  position: relative;
+}
+
+.user-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.user-circle {
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  color: #7E01AC;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background: linear-gradient(145deg, #ffffff, #f8e6fc);
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(126, 1, 172, 0.3);
+  display: none;
+  flex-direction: column;
+  width: 200px;
+  z-index: 10;
+  padding: 10px 0;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.dropdown a {
+  padding: 12px 20px;
+  text-decoration: none;
+  font-family: 'Inknut Antiqua', serif;
+  font-size: 16px;
+  color: #4c074b;
+  transition: background 0.3s, color 0.3s;
+}
+
+.dropdown a:hover {
+  background-color: #f3d5fb;
+  color: #7E01AC;
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+    .nav-right {
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="background">
+
+    <!-- Navbar -->
+    <nav class="navbar">
+  <div class="logo-top">Elysia</div>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/aboutus">About us</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="#">Subscription</a>
+
+    <% if (!user) { %>
+      <a href="/login">Log in</a>
+    <% } else { %>
+      <div class="user-menu">
+        <div class="user-circle" id="userCircle"><%= user.initial %></div>
+        <div class="dropdown" id="dropdownMenu">
+          <a href="/profile">Profile</a>
+          <a href="/past">Past Interaction</a>
+          <a href="#">Recent Report</a>
+          <a href="/logout">Logout</a>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</nav>
+
+
+    <!-- Login Form -->
+    <div class="content-wrapper">
+      <form class="signup-box" method="POST" action="/login">
+        <h1>Log in</h1>
+        <p class="subtitle">Keep your mental health fit</p>
+
+        <input type="email" name="email" class="input-field" placeholder="Email or Phone" required>
+        <input type="password" name="password" class="input-field" placeholder="Password" required>
+
+        <button type="submit" class="signup-button">Log in</button>
+
+        <div class="or-separator">
+          <hr><span>or</span><hr>
+        </div>
+
+        <button type="button" class="google-button">Sign in with Google</button>
+
+        <div class="login-link">
+          Don’t have an account? <a href="/signup">Signup</a>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  <script>
+    const circle = document.getElementById('userCircle');
+    const dropdown = document.getElementById('dropdownMenu');
+    if (circle) {
+      circle.addEventListener('click', () => {
+        dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+      });
+
+      window.addEventListener('click', (e) => {
+        if (!circle.contains(e.target)) {
+          dropdown.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>

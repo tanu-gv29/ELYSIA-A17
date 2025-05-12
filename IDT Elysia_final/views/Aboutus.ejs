@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Elysia</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .background {
+      position: relative;
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      background-image: url('/Img2.jpg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      filter: brightness(1.2);
+    }
+
+    .content-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 4rem;
+    }
+
+    .right-side {
+      max-width: 1000px;
+      text-align: right;
+    }
+
+    .intro-text {
+      font-family: 'Poppins', sans-serif !important;
+      font-weight: 400 !important;
+      font-size: 40px;
+      line-height: 75px;
+      letter-spacing: 2%;
+      color: #FFFFFF;
+      font-style: normal !important;
+    }
+
+    .slogan span {
+      font-family: Harlow Solid Italic;
+      font-weight: 400;
+      font-style: italic;
+      font-size: 60px;
+      line-height: 75px;
+      letter-spacing: 2%;
+      color: #7E01AC;
+      -webkit-text-stroke: 1px white;
+    }
+
+    .navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  z-index: 1;
+  position: relative;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  position: relative;
+}
+
+.user-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.user-circle {
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  color: #7E01AC;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background: linear-gradient(145deg, #ffffff, #f8e6fc);
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(126, 1, 172, 0.3);
+  display: none;
+  flex-direction: column;
+  width: 200px;
+  z-index: 10;
+  padding: 10px 0;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.dropdown a {
+  padding: 12px 20px;
+  text-decoration: none;
+  font-family: 'Inknut Antiqua', serif;
+  font-size: 16px;
+  color: #4c074b;
+  transition: background 0.3s, color 0.3s;
+}
+
+.dropdown a:hover {
+  background-color: #f3d5fb;
+  color: #7E01AC;
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+    .nav-right {
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="background">
+
+    <!-- Navbar -->
+    <nav class="navbar">
+  <div class="logo-top">Elysia</div>
+  <div class="nav-links">
+    <a href="/">Home</a>
+    <a href="/aboutus">About us</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="#">Subscription</a>
+
+    <% if (!user) { %>
+      <a href="/login">Log in</a>
+    <% } else { %>
+      <div class="user-menu">
+        <div class="user-circle" id="userCircle"><%= user.initial %></div>
+        <div class="dropdown" id="dropdownMenu">
+          <a href="/profile">Profile</a>
+          <a href="/past">Past Interaction</a>
+          <a href="#">Recent Report</a>
+          <a href="/logout">Logout</a>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</nav>
+
+
+    <div class="content-wrapper">
+      <div class="right-side">
+        <p class="intro-text">Presenting Elysia – Your AI Powered Voice Assisted AI</p>
+        <p class="intro-text" style="text-align: center;">Therapist for your mental wellbeing.</p>
+        <br><br>
+        <p class="slogan">
+          <span>Where your feelings find a Voice</span>
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const circle = document.getElementById('userCircle');
+    const dropdown = document.getElementById('dropdownMenu');
+    if (circle) {
+      circle.addEventListener('click', () => {
+        dropdown.style.display = dropdown.style.display === 'flex' ? 'none' : 'flex';
+      });
+
+      window.addEventListener('click', (e) => {
+        if (!circle.contains(e.target)) {
+          dropdown.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
